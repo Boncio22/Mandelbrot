@@ -17,17 +17,17 @@ using namespace std;
 #define I_max   0.6f
 
 #define R_center -0.22f
-#define I_center 0.675f
+#define I_center 0.64f
 #define wid 0.05f
-#define zoom 0.9f
+#define zoom 0.97f
 #define potega 2
 
-#define ile_klatek 10
+#define ile_klatek 120
 #define iterations  500 + ile_klatek
-#define procent 1
+#define procent 5
 
-#define picW    300
-#define picH    300
+#define picW    500
+#define picH    500
 #define color   255
 
 #define uR (R_max-R_min)/picW
@@ -84,7 +84,7 @@ int main(int argc, char * argv[]) {
     int setki = 0, dziesiatki = 0, jednosci = 0;
     float rozrzut = wid;
     
-    for (int i = 0; i < ile_klatek; ++i)
+    for (int klatki = 1; klatki <= ile_klatek; ++klatki)
     {
         float uR2 = rozrzut/picW;
         float uI2 = rozrzut/picH;
@@ -116,12 +116,12 @@ int main(int argc, char * argv[]) {
                 
                 int n = findMandelbrot(C);
                 
-                draw pixel(n, mandelbrot);
+                draw pixel(n, mandelbrot, iterations);
                 //mandelbrot <<pixel.R <<' ' <<pixel.G <<' ' <<pixel.B <<'\n';
             }
             
             if (y % (picH / 100 * procent) == 0) {
-                cout <<"Rysowanie: "<<postep <<'%' <<'\n';
+                cout <<"Klatka " << klatki <<'\\' <<ile_klatek <<" - Rysowanie: "<<postep <<'%' <<'\n';
                 postep += procent;
             }
         }
