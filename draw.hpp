@@ -18,7 +18,7 @@ public:
 public:
     draw(float num, std::ofstream& mandelbrot, const int iterations)
     {
-        //num *= color;
+        int tmp = num;
         num = (int)num % 16;
         if (num < 0.5f) {
             this->R = 0;
@@ -90,8 +90,10 @@ public:
             B = 3;
         }
         
-        if (num == iterations-1) {
-            R = G = B = 0;
+        if (tmp == iterations) {
+            this->R = 50;
+            this->G = 50;
+            this->B = 50;
         }
         
         mandelbrot <<this->R <<' ' <<this->G <<' ' <<this->B <<'\n';
