@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <fstream>
+#include "draw.hpp"
 using namespace std;
 
 #define R_min   0.3f
@@ -15,16 +16,18 @@ using namespace std;
 #define I_min   0.5f
 #define I_max   0.6f
 
-#define R_center -0.07f
-#define I_center 0.6f
-#define wid 0.2f
+#define R_center -0.22f
+#define I_center 0.675f
+#define wid 0.05f
+#define zoom 0.9f
+#define potega 2
 
-#define ile_klatek 1
-#define iterations  1000
-#define procent 100
+#define ile_klatek 10
+#define iterations  500 + ile_klatek
+#define procent 1
 
-#define picW    2560
-#define picH    2000
+#define picW    300
+#define picH    300
 #define color   255
 
 #define uR (R_max-R_min)/picW
@@ -37,99 +40,34 @@ struct complex {
     
     complex operator +(const complex& b)
     {
-        return complex{this->real + b.real, this->imaginary + b.imaginary};
-        //return c;
+        complex C;
+        C.real = this->real + b.real;
+        C.imaginary = this->imaginary + b.imaginary;
+        return C;
     }
     
     complex operator *(const complex& b)
     {
-        return complex{this->real*b.real - this->imaginary*b.imaginary, this->real*b.imaginary + this->imaginary*b.real};
+        complex C;
+        C.real = this->real*b.real - this->imaginary*b.imaginary;
+        C.imaginary = this->real*b.imaginary + this->imaginary*b.real;
+        return C;
     }
-};
-
-class draw {
-public:
-    int R;
-    int G;
-    int B;
     
-public:
-    draw(float num)
+    complex operator ^(const unsigned& p)
     {
-        //num *= color;
-        num = (int)num % 16;
-        if (num < 0.5f) {
-            this->R = 0;
-            this->G = 0;
-            this->B = 0;
-        } else if (num < 1.f) {
-            this->R = 66;
-            this->G = 30;
-            this->B = 15;
-        } else if (num < 2.f) {
-            this->R = 25;
-            this->G = 7;
-            this->B = 26;
-        } else if (num < 3.f) {
-            this->R = 9;
-            this->G = 1;
-            this->B = 47;
-        } else if (num < 4.f) {
-            this->R = 4;
-            this->G = 4;
-            this->B = 73;
-        } else if (num < 5.f) {
-            this->R = 0;
-            this->G = 7;
-            this->B = 100;
-        } else if (num < 6.f) {
-            this->R = 12;
-            this->G = 44;
-            this->B = 138;
-        } else if (num < 7.f) {
-            this->R = 24;
-            this->G = 82;
-            this->B = 177;
-        } else if (num < 8.f){
-            this->R = 57;
-            this->G = 125;
-            this->B = 209;
-        } else if (num < 9.f) {
-            this->R = 134;
-            this->G = 181;
-            this->B = 229;
-        } else if (num < 10.f) {
-            this->R = 211;
-            this->G = 236;
-            this->B = 248;
-        } else if (num < 11.f) {
-            this->R = 241;
-            this->G = 233;
-            this->B = 191;
-        } else if (num < 12.f) {
-            this->R = 248;
-            this->G = 201;
-            this->B = 95;
-        } else if (num < 13.f) {
-            this->R = 255;
-            this->G = 170;
-            this->B = 0;
-        } else if (num < 14.f) {
-            this->R = 204;
-            this->G = 128;
-            this->B = 0;
-        } else if (num < 15.f) {
-            R = 153;
-            G = 87;
-            B = 0;
-        } else {
-            R = 106;
-            G = 52;
-            B = 3;
-        }
+        complex tmp;
+        tmp.real = this->real;
+        tmp.imaginary = this->imaginary;
+        
+        complex pot = tmp;
+        
+        for(int i=1; i<p; ++i)
+            tmp  = tmp * pot;
+        
+        return tmp;
     }
 };
-
 
 int findMandelbrot(complex num);
 
@@ -145,43 +83,25 @@ int main(int argc, char * argv[]) {
     
     int setki = 0, dziesiatki = 0, jednosci = 0;
     float rozrzut = wid;
-    float uR2 = rozrzut/picW;
-    float uI2 = rozrzut/picH;
     
-    for (int i = 0; i < ile_klatek; ++i) {
+    for (int i = 0; i < ile_klatek; ++i)
+    {
+        float uR2 = rozrzut/picW;
+        float uI2 = rozrzut/picH;
         
-//        int histogram[iterations]= {0};
-//        
-//        float postep = 0;
-//        for (int y=0; y<picH; ++y) {
-//            for (int x=0; x<picW; ++x) {
-//                complex C;
-//                C.real = R_center - rozrzut + x*2.f*uR2;
-//                C.imaginary = I_center - rozrzut + y*2.f*uI2;
-//                
-//                int n = findMandelbrot(C);
-//                
-//                histogram[n]++;
-//            }
-//            if (y % (picH / procent) == 0) {
-//                cout <<"Liczenie: "<<postep <<'%' <<'\n';
-//                postep += 100.f/procent;
-//            }
-//        }
-//        
-//        int total = 0;
-//        for (int i=0; i<iterations; ++i) {
-//            total += histogram[i];
-//        }
-//        cout <<total <<endl;
-        
-        cout <<picW <<'\t' <<picH <<endl;
-        cout <<R_min <<'\t' <<R_max <<endl;
-        cout <<I_min <<'\t' <<I_max <<endl;
+        cout <<"Szerokość obrazka: " <<picW <<'\t' <<"Wysokość obrazka: " <<picH <<endl;
+        cout <<"Zakres części rzeczywistej: "   <<R_center - rozrzut <<" - " <<R_center + rozrzut <<endl;
+        cout <<"Zakres części urojonej: "       <<I_center - rozrzut <<" - " <<I_center + rozrzut <<endl;
         
         cout.sync_with_stdio(false);
         
-        ofstream mandelbrot( name.c_str() + to_string(setki) + to_string(dziesiatki) + to_string(jednosci) + ".ppm");
+        ofstream mandelbrot;
+        
+        if (ile_klatek > 1) {
+            mandelbrot.open( name.c_str() + to_string(setki) + to_string(dziesiatki) + to_string(jednosci) + ".ppm");
+        } else {
+            mandelbrot.open( name + ".ppm" );
+        }
         
         mandelbrot <<"P3" <<endl;
         mandelbrot <<picW <<' ' <<picH <<endl;
@@ -191,30 +111,25 @@ int main(int argc, char * argv[]) {
         for (int y=0; y<picH; ++y) {
             for (int x=0; x<picW; ++x) {
                 complex C;
-                C.real = R_center - rozrzut + x*2.f*uR2;
-                C.imaginary = I_center - rozrzut + y*2.f*uI2;
+                C.real = R_center - rozrzut + 2*x*uR2;
+                C.imaginary = I_center - rozrzut + 2*y*uI2;
                 
                 int n = findMandelbrot(C);
                 
-//                float hue = 0.f;
-//                for (int i=0; i<n; ++i) {
-//                    hue += histogram[i] / (float)total;
-//                }
-//                draw pixel(hue);
-                draw pixel(n);
-                mandelbrot <<pixel.R <<' ' <<pixel.G <<' ' <<pixel.B <<'\n';
+                draw pixel(n, mandelbrot);
+                //mandelbrot <<pixel.R <<' ' <<pixel.G <<' ' <<pixel.B <<'\n';
             }
             
-            if (y % (picH / procent) == 0) {
-                cout <<"Rysowanie "<<postep <<'%' <<'\n';
-                postep += 100.f/procent;
+            if (y % (picH / 100 * procent) == 0) {
+                cout <<"Rysowanie: "<<postep <<'%' <<'\n';
+                postep += procent;
             }
         }
         cout <<endl;
         
         mandelbrot.close();
         
-        rozrzut *= 0.9f;
+        rozrzut *= zoom;
         jednosci++;
         if (jednosci == 10) {
             jednosci = 0;
@@ -236,12 +151,15 @@ int main(int argc, char * argv[]) {
 int findMandelbrot(complex num)
 {
     int i = 0;
-    complex z{0, 0};
+    complex z;
+    z.real =0;
+    z.imaginary = 0;
     
-    while (i < iterations && z.real*z.real + z.imaginary*z.imaginary < 4) {
-        float tmp = z.real*z.real - z.imaginary*z.imaginary + num.real;
-        z.imaginary = 2.f * z.real * z.imaginary + num.imaginary;
-        z.real = tmp;
+    while (i < iterations && z.real*z.real + z.imaginary*z.imaginary < 2) {
+//        float tmp = z.real*z.real - z.imaginary*z.imaginary + num.real;
+//        z.imaginary = 2.f * z.real * z.imaginary + num.imaginary;
+//        z.real = tmp;
+        z = (z^potega) + num;
         ++i;
     }
     
