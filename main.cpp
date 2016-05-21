@@ -95,13 +95,15 @@ int main(int argc, char * argv[]) {
         
         cout.sync_with_stdio(false);
         
-        ofstream mandelbrot;
+        string tmp = name;
         
         if (ile_klatek > 1) {
-            mandelbrot.open( name.c_str() + to_string(setki) + to_string(dziesiatki) + to_string(jednosci) + ".ppm");
+            tmp = name + setki + dziesiatki + jednosci + ".ppm";
         } else {
-            mandelbrot.open( name + ".ppm" );
+            tmp = name + ".ppm";
         }
+        
+        ofstream mandelbrot(tmp);
         
         mandelbrot <<"P3" <<endl;
         mandelbrot <<picW <<' ' <<picH <<endl;
@@ -114,9 +116,9 @@ int main(int argc, char * argv[]) {
                 C.real = R_center - rozrzut + 2*x*uR2;
                 C.imaginary = I_center - rozrzut + 2*y*uI2;
                 
-                int n = findMandelbrot(C);
+                //int n = findMandelbrot(C);
                 
-                draw pixel(n, mandelbrot, iterations);
+                draw pixel(findMandelbrot(C), mandelbrot, iterations);
                 //mandelbrot <<pixel.R <<' ' <<pixel.G <<' ' <<pixel.B <<'\n';
             }
             
@@ -131,14 +133,14 @@ int main(int argc, char * argv[]) {
         
         rozrzut *= zoom;
         jednosci++;
-        if (jednosci == 10) {
-            jednosci = 0;
+        if (jednosci == 58) {
+            jednosci -= 10;
             dziesiatki++;
         }
-        if (dziesiatki == 10) {
-            dziesiatki = 0;
+        if (dziesiatki == 58) {
+            dziesiatki -= 10;
             setki++;
-        }
+        
     }
     
     cout.sync_with_stdio(true);
