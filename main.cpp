@@ -167,7 +167,7 @@ int main(int argc, char * argv[]) {
     cout.sync_with_stdio(true);
 
     cout <<"Kuniec" <<endl;
-    system("echo kupa");
+    system("./konwersja.sh");
 
     return 0;
 }
