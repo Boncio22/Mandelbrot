@@ -1,0 +1,6 @@
+*.ppm
+Debug/Mandelbrot.tlog/CL.command.1.tlog
+*.tlog
+Debug/vc140.idb
+*.filters
+*.sln

@@ -13,6 +13,7 @@
 #include <string>
 
 #include "draw.hpp"
+
 using namespace std;
 
 #define R_min   0.3
@@ -33,8 +34,8 @@ using namespace std;
 #define iterations  500 + ile_klatek
 #define procent 5
 
-#define picW    500
-#define picH    500
+#define picW    1000
+#define picH    1000
 #define color   255
 
 // #define uR (R_max-R_min)/picW
@@ -96,9 +97,9 @@ int main(int argc, char * argv[]) {
     string name;
     if (argc < 2) {
         cout <<"Podaj nazwę tworzonych plików: ";
-        cin >>name;
+        cin >> name;
     } else {
-        name = argv[1];
+        name = argv[1]; // pierwszy argument po nazwie
     }
 
     char setki = 48, dziesiatki = 48, jednosci = 48;
