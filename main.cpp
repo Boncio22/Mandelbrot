@@ -9,9 +9,6 @@
 #include <iostream>
 #include <fstream>
 
-#include <png.h>
-#include <pngwriter.h>
-
 #include "draw.hpp"
 
 using namespace std;
@@ -112,9 +109,6 @@ int main(int argc, char * argv[]) {
         
         ofstream mandelbrot(tmp);   // wyrzucanie do pliku o danej nazwie
         
-        string png = name + ".png";
-        pngwriter Mandelbrot(picH, picW, 0, png.c_str());
-        
         // naglowek PPM
         mandelbrot <<"P3" <<endl;
         mandelbrot <<picW <<' ' <<picH <<endl;
@@ -127,13 +121,8 @@ int main(int argc, char * argv[]) {
                 complex C;
                 C.real = R_center - rozrzut + x * uR2;  // ustalenie pozycji rzeczywistej
                 C.imaginary = I_center - rozrzut + y * uI2; // ustalenie pozycji urojonej
-                
-                //int n = findMandelbrot(C);
 
-                //draw pixel(findMandelbrot(C), mandelbrot, iterations); // wyznaczenie koloru pixela
-                draw pixel(findMandelbrot(C), iterations);
-                Mandelbrot.plot(x, y, pixel.R, pixel.G, pixel.B);
-                //mandelbrot <<pixel.R <<' ' <<pixel.G <<' ' <<pixel.B <<'\n';
+                draw pixel(findMandelbrot(C), mandelbrot, iterations); // wyznaczenie koloru pixela
             }
             
             if (y % (int)(picH / 100 * procent) == 0) {  // info o postepie
@@ -172,15 +161,13 @@ int findMandelbrot(complex num)
     complex z = num;    // pominiecie zerowej iteracji
     
     while (i < iterations && z.real*z.real + z.imaginary*z.imaginary < 2) {
-//        float tmp = z.real*z.real - z.imaginary*z.imaginary + num.real;
-//        z.imaginary = 2.f * z.real * z.imaginary + num.imaginary;
-//        z.real = tmp;
         z = (z^potega) + num;
         ++i;
     }
     
     return i;
 }
+
 
 
 
