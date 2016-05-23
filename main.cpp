@@ -10,6 +10,7 @@
 #include <fstream>
 #include <iomanip>
 #include <stdlib.h>
+#include <string>
 
 #include "draw.hpp"
 using namespace std;
