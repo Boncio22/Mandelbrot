@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #include "draw.hpp"
 
@@ -78,7 +79,7 @@ int main(int argc, char * argv[]) {
     string name;    // nazwa tworzonych plikow
     if (argc < 2) { // jesli nie podano w argumencie to popros uzytkownika o zdefiniowanie
         cout <<"Podaj nazwę tworzonych plików: ";
-        cin >>name;
+        cin >> name;
     } else {
         name = argv[1]; // pierwszy argument po nazwie
     }
