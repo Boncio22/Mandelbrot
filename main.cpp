@@ -9,19 +9,20 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <stdlib.h>
 
 #include "draw.hpp"
 using namespace std;
 
-#define R_min   0.3f
-#define R_max   0.4f
-#define I_min   0.5f
-#define I_max   0.6f
+#define R_min   0.3
+#define R_max   0.4
+#define I_min   0.5
+#define I_max   0.6
 
-#define R_center 0.001643721971153f
-#define I_center 0.822467633298876f
-#define wid 0.05f
-#define zoom 0.98f
+#define R_center 0.001643721971153
+#define I_center 0.822467633298876
+#define wid 0.05
+#define zoom 0.98
 #define potega 2
 
 #define szybkosc 24
@@ -40,8 +41,8 @@ using namespace std;
 
 
 struct complex {
-    float real;
-    float imaginary;
+    double real;
+    double imaginary;
 
     complex operator +(const complex& b)
     {
@@ -74,9 +75,9 @@ struct complex {
     }
 };
 
-int findMandelbrot(complex num)
+unsigned int findMandelbrot(complex num)
 {
-    int i = 0;
+    unsigned int i = 0;
     complex z;
     z.real =0;
     z.imaginary = 0;
@@ -100,12 +101,12 @@ int main(int argc, char * argv[]) {
     }
 
     char setki = 48, dziesiatki = 48, jednosci = 48;
-    float rozrzut = wid;
+    double rozrzut = wid;
 
     for (int klatki = 1; klatki <= ile_klatek; ++klatki)
     {
-        float uR2 = rozrzut/picW;
-        float uI2 = rozrzut/picH;
+        double uR2 = rozrzut/picW/2;
+        double uI2 = rozrzut/picH/2;
 
         cout <<"Szerokość obrazka: " <<picW <<'\t' <<"Wysokość obrazka: " <<picH <<endl;
         cout <<"Zakres części rzeczywistej: "   <<setprecision(20) <<R_center - rozrzut <<" - " <<R_center + rozrzut <<endl;
@@ -127,12 +128,12 @@ int main(int argc, char * argv[]) {
         mandelbrot <<picW <<' ' <<picH <<endl;
         mandelbrot <<color <<endl;
 
-        float postep = 0;
+        double postep = 0;
         for (int y=0; y<picH; ++y) {
             for (int x=0; x<picW; ++x) {
                 complex C;
-                C.real = R_center - rozrzut + 2*x*uR2;
-                C.imaginary = I_center - rozrzut + 2*y*uI2;
+                C.real = R_center - rozrzut + x*uR2;
+                C.imaginary = I_center - rozrzut + y*uI2;
 
                 //int n = findMandelbrot(C);
 
@@ -165,6 +166,7 @@ int main(int argc, char * argv[]) {
     cout.sync_with_stdio(true);
 
     cout <<"Kuniec" <<endl;
+    system("echo kupa");
 
     return 0;
 }
