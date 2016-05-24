@@ -20,4 +20,6 @@ do
   rm $name.ppm
 done
 
+echo "GOTOWE!"
+
 cd ..

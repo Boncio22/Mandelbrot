@@ -4,3 +4,7 @@ Debug/Mandelbrot.tlog/CL.command.1.tlog
 Debug/vc140.idb
 *.filters
 *.sln
+/Mandelbrot.vcxproj.user
+/Mandelbrot.VC.VC.opendb
+/Mandelbrot.VC.db
+/.vs/Mandelbrot/v14/.suo
