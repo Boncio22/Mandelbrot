@@ -1,7 +1,3 @@
-
-// cokolwiek ebiusargbuweipuei tu
-
-
 //
 //  main.cpp
 //  lista8
