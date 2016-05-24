@@ -16,30 +16,34 @@
 
 using namespace std;
 
-#define picW 1920.0
-#define picH 1080.0
-#define color 255
+#define picW    1920.0
+#define picH    1080.0
+#define color   255
 
 #define R_min   0.3
 #define R_max   0.4
 #define I_min   0.5
 #define I_max   0.6
 
-#define R_center 0.001643721971153
-#define I_center 0.822467633298876
-#define widR 0.05
-#define widI widR*(picH/picW)
-#define zoom 0.99
-#define potega 2
+#define R_start 0.001643721971153
+#define I_start 0.822467633298876
+
+#define R_end   0.001643721971153
+#define I_end   0.822467633298876
+
+#define widR    0.05
+#define widI    widR*(picH/picW)
+#define zoom    0.99
+#define potega  2
 
 
-#define animacja true
-#define szybkosc 60
-#define dlugosc 30
+#define animacja    true
+#define szybkosc    60
+#define dlugosc     30
 
-#define ile_klatek szybkosc * dlugosc
+#define ile_klatek  szybkosc * dlugosc
 #define iterations  500 + ile_klatek
-#define procent 5
+#define procent     5
 
 struct complex {
     double real;
@@ -133,8 +137,8 @@ int main(int argc, char * argv[]) {
         for (int y=0; y<picH; ++y) {
             for (int x=0; x<picW; ++x) {
                 complex C;
-                C.real = R_center - rozrzutR + x*uR2;
-                C.imaginary = I_center - rozrzutI + y*uI2;
+                C.real = R_start - rozrzutR + x*uR2;
+                C.imaginary = I_start - rozrzutI + y*uI2;
 
                 draw pixel(findMandelbrot(C), mandelbrot, iterations);
             }
