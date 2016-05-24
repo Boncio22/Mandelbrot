@@ -32,6 +32,8 @@ using namespace std;
 #define zoom 0.99
 #define potega 2
 
+
+#define animacja true
 #define szybkosc 60
 #define dlugosc 30
 
@@ -116,7 +118,7 @@ int main(int argc, char * argv[]) {
 
         string tmp = name;
 
-        if (ile_klatek > 1) {
+        if (animacja) {
             tmp = "Grafiki/" + name + setki + dziesiatki + jednosci + ".ppm";
         } else {
             tmp = "Grafiki/" + name + ".ppm";
@@ -128,7 +130,6 @@ int main(int argc, char * argv[]) {
         mandelbrot <<picW <<' ' <<picH <<endl;
         mandelbrot <<color <<endl;
 
-        double postep = 0;
         for (int y=0; y<picH; ++y) {
             for (int x=0; x<picW; ++x) {
                 complex C;
