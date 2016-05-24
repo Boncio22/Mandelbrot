@@ -28,7 +28,7 @@ using namespace std;
 #define potega 2
 
 #define szybkosc 24
-#define dlugosc 30
+#define dlugosc 15
 
 #define ile_klatek szybkosc * dlugosc
 #define iterations  500 + ile_klatek
@@ -107,8 +107,8 @@ int main(int argc, char * argv[]) {
 
     for (int klatki = 1; klatki <= ile_klatek; ++klatki)
     {
-        double uR2 = rozrzut/picW/2;
-        double uI2 = rozrzut/picH/2;
+        double uR2 = rozrzut/picW*2;
+        double uI2 = rozrzut/picH*2;
 
         cout <<"Szerokość obrazka: " <<picW <<'\t' <<"Wysokość obrazka: " <<picH <<endl;
         cout <<"Zakres części rzeczywistej: "   <<setprecision(20) <<R_center - rozrzut <<" - " <<R_center + rozrzut <<endl;
@@ -168,6 +168,7 @@ int main(int argc, char * argv[]) {
     cout.sync_with_stdio(true);
 
     cout <<"Kuniec" <<endl;
+
     system("./konwersja.sh");
 
     return 0;

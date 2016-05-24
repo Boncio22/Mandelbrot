@@ -9,6 +9,8 @@
 #ifndef draw_hpp
 #define draw_hpp
 
+#include <fstream>
+
 class draw {
 public:
     double R;    // red
