@@ -9,6 +9,7 @@ for file in $(ls *ppm)
 do
   name=${file%%.ppm}
   convert $name.ppm $name.png
+  echo "$name"
 done
 
 rm *.ppm
