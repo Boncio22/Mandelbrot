@@ -1,3 +1,7 @@
+
+// cokolwiek ebiusargbuweipuei tu
+
+
 //
 //  main.cpp
 //  lista8
@@ -16,6 +20,10 @@
 
 using namespace std;
 
+#define picW 1920.0
+#define picH 1080.0
+#define color 255
+
 #define R_min   0.3
 #define R_max   0.4
 #define I_min   0.5
@@ -23,24 +31,17 @@ using namespace std;
 
 #define R_center 0.001643721971153
 #define I_center 0.822467633298876
-#define wid 0.05
-#define zoom 0.98
+#define widR 0.05
+#define widI widR*(picH/picW)
+#define zoom 0.99
 #define potega 2
 
-#define szybkosc 24
-#define dlugosc 15
+#define szybkosc 60
+#define dlugosc 30
 
 #define ile_klatek szybkosc * dlugosc
 #define iterations  500 + ile_klatek
 #define procent 5
-
-#define picW    1000
-#define picH    1000
-#define color   255
-
-// #define uR (R_max-R_min)/picW
-// #define uI (I_max-I_min)/picH
-
 
 struct complex {
     double real;
@@ -103,16 +104,17 @@ int main(int argc, char * argv[]) {
     }
 
     char setki = 48, dziesiatki = 48, jednosci = 48;
-    double rozrzut = wid;
+    double rozrzutR = widR;
+    double rozrzutI = widI;
 
     for (int klatki = 1; klatki <= ile_klatek; ++klatki)
     {
-        double uR2 = rozrzut/picW*2;
-        double uI2 = rozrzut/picH*2;
+        double uR2 = 2*rozrzutR/picW;
+        double uI2 = 2*rozrzutI/picH;
 
-        cout <<"Szerokość obrazka: " <<picW <<'\t' <<"Wysokość obrazka: " <<picH <<endl;
-        cout <<"Zakres części rzeczywistej: "   <<setprecision(20) <<R_center - rozrzut <<" - " <<R_center + rozrzut <<endl;
-        cout <<"Zakres części urojonej: "       <<setprecision(20) <<I_center - rozrzut <<" - " <<I_center + rozrzut <<endl;
+        cout <<"Szerokość obrazka: " <<picW <<'\t' <<"Wysokość obrazka: " <<picH <<'\t';
+        cout <<"Zakres części rzeczywistej: "   <<setprecision(20) <<R_center - rozrzutR <<" - " <<R_center + rozrzutR <<'\t';
+        cout <<"Zakres części urojonej: "       <<setprecision(20) <<I_center - rozrzutI <<" - " <<I_center + rozrzutI <<endl;
 
         cout.sync_with_stdio(false);
 
@@ -134,25 +136,18 @@ int main(int argc, char * argv[]) {
         for (int y=0; y<picH; ++y) {
             for (int x=0; x<picW; ++x) {
                 complex C;
-                C.real = R_center - rozrzut + x*uR2;
-                C.imaginary = I_center - rozrzut + y*uI2;
-
-                //int n = findMandelbrot(C);
+                C.real = R_center - rozrzutR + x*uR2;
+                C.imaginary = I_center - rozrzutI + y*uI2;
 
                 draw pixel(findMandelbrot(C), mandelbrot, iterations);
-                //mandelbrot <<pixel.R <<' ' <<pixel.G <<' ' <<pixel.B <<'\n';
-            }
-
-            if (y % (picH / 100 * procent) == 0) {
-                cout <<"Klatka " << klatki <<'\\' <<ile_klatek <<" - Rysowanie: "<<postep <<'%' <<'\n';
-                postep += procent;
             }
         }
-        cout <<endl;
+        cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<ile_klatek <<"\033[0m" <<endl;
 
         mandelbrot.close();
 
-        rozrzut *= zoom;
+        rozrzutR *= zoom;
+        rozrzutI *= zoom;
         jednosci++;
         if (jednosci == 58) {
             jednosci -= 10;
