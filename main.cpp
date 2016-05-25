@@ -41,7 +41,6 @@ using namespace std;
 #define szybkosc    60
 #define dlugosc     30
 
-#define ile_klatek  szybkosc * dlugosc
 #define iterations  500 + ile_klatek
 #define procent     5
 
@@ -109,7 +108,11 @@ int main(int argc, char * argv[]) {
     double rozrzutR = widR;
     double rozrzutI = widI;
 
-    for (int klatki = 1; klatki <= ile_klatek; ++klatki)
+    unsigned int = szybkosc * dlugosc;
+    if (animacja)
+	limit = 1;
+
+    for (unsigned int klatki = 1; klatki <= limit; ++klatki)
     {
         double uR2 = 2*rozrzutR/picW;
         double uI2 = 2*rozrzutI/picH;
