@@ -13,6 +13,7 @@
 #include <string>
 
 #include "draw.hpp"
+#include "complex.hpp"
 
 using namespace std;
 
@@ -36,48 +37,11 @@ using namespace std;
 #define zoom    0.99
 #define potega  2
 
-
-#define animacja    true
+#define animacja    false
 #define szybkosc    60
 #define dlugosc     30
 
-#define iterations  500 + ile_klatek
-#define procent     5
-
-struct complex {
-    double real;
-    double imaginary;
-
-    complex operator +(const complex& b)
-    {
-        complex C;
-        C.real = this->real + b.real;
-        C.imaginary = this->imaginary + b.imaginary;
-        return C;
-    }
-
-    complex operator *(const complex& b)
-    {
-        complex C;
-        C.real = this->real*b.real - this->imaginary*b.imaginary;
-        C.imaginary = this->real*b.imaginary + this->imaginary*b.real;
-        return C;
-    }
-
-    complex operator ^(const unsigned& p)
-    {
-        complex tmp;
-        tmp.real = this->real;
-        tmp.imaginary = this->imaginary;
-
-        complex pot = tmp;
-
-        for(unsigned int i=1; i<p; ++i)
-            tmp  = tmp * pot;
-
-        return tmp;
-    }
-};
+#define iterations  500 + szybkosc * dlugosc
 
 unsigned int findMandelbrot(complex num)
 {
@@ -108,9 +72,17 @@ int main(int argc, char * argv[]) {
     double rozrzutR = widR;
     double rozrzutI = widI;
 
-    unsigned int = szybkosc * dlugosc;
-    if (animacja)
-	limit = 1;
+    unsigned int limit = szybkosc * dlugosc;
+    if (!animacja)
+    {
+        limit = 1;
+    }
+    
+    double krok_R = (R_start - R_end) / limit;
+    double krok_I = (I_start - I_end) / limit;
+    
+    double R_mid = R_start;
+    double I_mid = I_start;
 
     for (unsigned int klatki = 1; klatki <= limit; ++klatki)
     {
@@ -118,8 +90,8 @@ int main(int argc, char * argv[]) {
         double uI2 = 2*rozrzutI/picH;
 
         cout <<"Szerokość obrazka: " <<picW <<'\t' <<"Wysokość obrazka: " <<picH <<'\t';
-        cout <<"Zakres części rzeczywistej: "   <<setprecision(20) <<R_center - rozrzutR <<" - " <<R_center + rozrzutR <<'\t';
-        cout <<"Zakres części urojonej: "       <<setprecision(20) <<I_center - rozrzutI <<" - " <<I_center + rozrzutI <<endl;
+        cout <<"Zakres części rzeczywistej: "   <<setprecision(20) <<R_mid- rozrzutR <<" - " <<R_mid + rozrzutR <<'\t';
+        cout <<"Zakres części urojonej: "       <<setprecision(20) <<I_mid - rozrzutI <<" - " <<I_mid + rozrzutI <<endl;
 
         cout.sync_with_stdio(false);
 
@@ -146,12 +118,16 @@ int main(int argc, char * argv[]) {
                 draw pixel(findMandelbrot(C), mandelbrot, iterations);
             }
         }
-        cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<ile_klatek <<"\033[0m" <<endl;
+        cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<limit <<"\033[0m" <<endl;
 
         mandelbrot.close();
 
         rozrzutR *= zoom;
         rozrzutI *= zoom;
+        
+        R_mid += krok_R;
+        I_mid += krok_I;
+        
         jednosci++;
         if (jednosci == 58) {
             jednosci -= 10;
@@ -168,7 +144,9 @@ int main(int argc, char * argv[]) {
 
     cout <<"Kuniec" <<endl;
 
-    system("./konwersja.sh");
+    if (animacja) {
+        system("./konwersja.sh");
+    }
 
     return 0;
 }
