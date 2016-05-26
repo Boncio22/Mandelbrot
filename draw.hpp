@@ -13,9 +13,9 @@
 
 class draw {
 public:
-    double R;    // red
-    double G;    // green
-    double B;    // blue
+    unsigned short int R;    // red
+    unsigned short int G;    // green
+    unsigned short int B;    // blue
 
 public:
     draw(float num, std::ofstream& mandelbrot, const int iterations)

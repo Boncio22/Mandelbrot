@@ -11,8 +11,8 @@
 
 class complex {
 public:
-    double real;
-    double imaginary;
+    long double real;
+    long double imaginary;
     
     complex operator +(const complex& b);
     

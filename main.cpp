@@ -29,7 +29,7 @@ using namespace std;
 #define R_start 0.001643721971153
 #define I_start 0.822467633298876
 
-#define R_end   0.10643721971153
+#define R_end   0.001643721971153
 #define I_end   0.822467633298876
 
 #define widR    0.05
@@ -37,9 +37,9 @@ using namespace std;
 #define zoom    0.99
 #define potega  2
 
-#define animacja    true
-#define szybkosc    6
-#define dlugosc     3
+#define animacja    false
+#define szybkosc    60
+#define dlugosc     20
 
 #define iterations  500 + szybkosc * dlugosc
 
@@ -70,9 +70,10 @@ int main(int argc, char * argv[]) {
         name = argv[1]; // pierwszy argument po nazwie
     }
 
-    char setki = 48, dziesiatki = 48, jednosci = 48;
-    double rozrzutR = widR;
-    double rozrzutI = widI;
+    char tysiace = 48, setki = 48, dziesiatki = 48, jednosci = 48;
+    long double rozrzutR = widR;
+    long double rozrzutI = widI;
+    
 
     unsigned int limit = szybkosc * dlugosc;
     if (!animacja)
@@ -80,16 +81,16 @@ int main(int argc, char * argv[]) {
         limit = 1;
     }
     
-    double krok_R = (R_end - R_start) / limit;
-    double krok_I = (I_end - I_start) / limit;
+    long double krok_R = (R_end - R_start) / limit;
+    long double krok_I = (I_end - I_start) / limit;
     
-    double R_mid = R_start;
-    double I_mid = I_start;
+    long double R_mid = R_start;
+    long double I_mid = I_start;
 
     for (unsigned int klatki = 1; klatki <= limit; ++klatki)
     {
-        double uR2 = 2*rozrzutR/picW;
-        double uI2 = 2*rozrzutI/picH;
+        long double uR2 = 2*rozrzutR/picW;
+        long double uI2 = 2*rozrzutI/picH;
 
         if (debug) {
             cout <<"Szerokość: " <<picW <<'\t' <<"Wysokość: " <<picH <<'\t';
@@ -102,7 +103,7 @@ int main(int argc, char * argv[]) {
         string tmp = name;
 
         if (animacja) {
-            tmp = "Grafiki/" + name + setki + dziesiatki + jednosci + ".ppm";
+            tmp = "Grafiki/" + name + tysiace + setki + dziesiatki + jednosci + ".ppm";
         } else {
             tmp = "Grafiki/" + name + ".ppm";
         }
@@ -140,7 +141,11 @@ int main(int argc, char * argv[]) {
         if (dziesiatki == 58) {
             dziesiatki -= 10;
             setki++;
-	}
+        }
+        if (setki == 58) {
+            setki -= 10;
+            tysiace++;
+        }
 
     }
 
