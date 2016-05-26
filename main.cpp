@@ -29,7 +29,7 @@ using namespace std;
 #define R_start 0.001643721971153
 #define I_start 0.822467633298876
 
-#define R_end   0.001643721971153
+#define R_end   0.10643721971153
 #define I_end   0.822467633298876
 
 #define widR    0.05
@@ -37,11 +37,13 @@ using namespace std;
 #define zoom    0.99
 #define potega  2
 
-#define animacja    false
-#define szybkosc    60
-#define dlugosc     30
+#define animacja    true
+#define szybkosc    6
+#define dlugosc     3
 
 #define iterations  500 + szybkosc * dlugosc
+
+#define debug false
 
 unsigned int findMandelbrot(complex num)
 {
@@ -78,8 +80,8 @@ int main(int argc, char * argv[]) {
         limit = 1;
     }
     
-    double krok_R = (R_start - R_end) / limit;
-    double krok_I = (I_start - I_end) / limit;
+    double krok_R = (R_end - R_start) / limit;
+    double krok_I = (I_end - I_start) / limit;
     
     double R_mid = R_start;
     double I_mid = I_start;
@@ -89,9 +91,11 @@ int main(int argc, char * argv[]) {
         double uR2 = 2*rozrzutR/picW;
         double uI2 = 2*rozrzutI/picH;
 
-        cout <<"Szerokość obrazka: " <<picW <<'\t' <<"Wysokość obrazka: " <<picH <<'\t';
-        cout <<"Zakres części rzeczywistej: "   <<setprecision(20) <<R_mid- rozrzutR <<" - " <<R_mid + rozrzutR <<'\t';
-        cout <<"Zakres części urojonej: "       <<setprecision(20) <<I_mid - rozrzutI <<" - " <<I_mid + rozrzutI <<endl;
+        if (debug) {
+            cout <<"Szerokość: " <<picW <<'\t' <<"Wysokość: " <<picH <<'\t';
+            cout <<"R_mid: "   <<setprecision(10) <<R_mid <<'\t';
+            cout <<"I_mid: "       <<setprecision(10) <<I_mid <<endl;
+        }
 
         cout.sync_with_stdio(false);
 
@@ -112,8 +116,8 @@ int main(int argc, char * argv[]) {
         for (int y=0; y<picH; ++y) {
             for (int x=0; x<picW; ++x) {
                 complex C;
-                C.real = R_start - rozrzutR + x*uR2;
-                C.imaginary = I_start - rozrzutI + y*uI2;
+                C.real = R_mid - rozrzutR + x*uR2;
+                C.imaginary = I_mid - rozrzutI + y*uI2;
 
                 draw pixel(findMandelbrot(C), mandelbrot, iterations);
             }
