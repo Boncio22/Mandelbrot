@@ -21,11 +21,6 @@ using namespace std;
 #define picH    1080.0
 #define color   255
 
-#define R_min   0.3
-#define R_max   0.4
-#define I_min   0.5
-#define I_max   0.6
-
 #define R_start 0.001643721971153
 #define I_start 0.822467633298876
 
@@ -34,10 +29,10 @@ using namespace std;
 
 #define widR    0.05
 #define widI    widR*(picH/picW)
-#define zoom    0.99
+#define zoom    0.98
 #define potega  2
 
-#define animacja    false
+#define animacja    true
 #define szybkosc    60
 #define dlugosc     20
 
