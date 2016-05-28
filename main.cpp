@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <stdlib.h>
 #include <string>
+#include <thread>
 
 #include "draw.hpp"
 #include "complex.hpp"
@@ -40,20 +41,18 @@ using namespace std;
 
 #define debug false
 
-unsigned int findMandelbrot(complex num)
-{
-    unsigned int i = 0;
-    complex z;
-    z.real =0;
-    z.imaginary = 0;
+inline unsigned int findMandelbrot(complex num);
 
-    while (i < iterations && z.real*z.real + z.imaginary*z.imaginary < 2) {
-        z = (z^potega) + num;
-        ++i;
-    }
-
-    return i;
-}
+void watek1(const string nazwa, const long double R_mid, const long double I_mid,
+            const long double rozrzutR, const long double rozrzutI);
+void watek2(const string nazwa, const long double R_mid, const long double I_mid,
+            const long double rozrzutR, const long double rozrzutI);
+void watek3(const string nazwa, const long double R_mid, const long double I_mid,
+            const long double rozrzutR, const long double rozrzutI);
+void watek4(const string nazwa, const long double R_mid, const long double I_mid,
+            const long double rozrzutR, const long double rozrzutI);
+void watek5(const string nazwa, const long double R_mid, const long double I_mid,
+            const long double rozrzutR, const long double rozrzutI);
 
 int main(int argc, char * argv[]) {
 
@@ -81,46 +80,16 @@ int main(int argc, char * argv[]) {
     
     long double R_mid = R_start;
     long double I_mid = I_start;
+    
+    cout.sync_with_stdio(false);
+    string tmp = name;
 
-    for (unsigned int klatki = 1; klatki <= limit; ++klatki)
+    for (unsigned int klatki = 0; klatki < limit; klatki+=5)
     {
-        long double uR2 = 2*rozrzutR/picW;
-        long double uI2 = 2*rozrzutI/picH;
-
-        if (debug) {
-            cout <<"Szerokość: " <<picW <<'\t' <<"Wysokość: " <<picH <<'\t';
-            cout <<"R_mid: "   <<setprecision(10) <<R_mid <<'\t';
-            cout <<"I_mid: "       <<setprecision(10) <<I_mid <<endl;
-        }
-
-        cout.sync_with_stdio(false);
-
-        string tmp = name;
-
-        if (animacja) {
-            tmp = "Grafiki/" + name + tysiace + setki + dziesiatki + jednosci + ".ppm";
-        } else {
-            tmp = "Grafiki/" + name + ".ppm";
-        }
-
-        ofstream mandelbrot(tmp.c_str());
-
-        mandelbrot <<"P3" <<endl;
-        mandelbrot <<picW <<' ' <<picH <<endl;
-        mandelbrot <<color <<endl;
-
-        for (int y=0; y<picH; ++y) {
-            for (int x=0; x<picW; ++x) {
-                complex C;
-                C.real = R_mid - rozrzutR + x*uR2;
-                C.imaginary = I_mid - rozrzutI + y*uI2;
-
-                draw pixel(findMandelbrot(C), mandelbrot, iterations);
-            }
-        }
-        cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<limit <<"\033[0m" <<endl;
-
-        mandelbrot.close();
+        // THREAD 1 //
+        tmp = "Grafiki/" + name + tysiace + setki + dziesiatki + jednosci + ".ppm";
+        
+        thread watek_1(watek1, tmp, R_mid, I_mid, rozrzutR, rozrzutI);
 
         rozrzutR *= zoom;
         rozrzutI *= zoom;
@@ -141,7 +110,114 @@ int main(int argc, char * argv[]) {
             setki -= 10;
             tysiace++;
         }
+        
+        // THREAD 2 //
+        tmp = "Grafiki/" + name + tysiace + setki + dziesiatki + jednosci + ".ppm";
+        
+        thread watek_2(watek2, tmp, R_mid, I_mid, rozrzutR, rozrzutI);
+        
+        rozrzutR *= zoom;
+        rozrzutI *= zoom;
+        
+        R_mid += krok_R;
+        I_mid += krok_I;
+        
+        jednosci++;
+        if (jednosci == 58) {
+            jednosci -= 10;
+            dziesiatki++;
+        }
+        if (dziesiatki == 58) {
+            dziesiatki -= 10;
+            setki++;
+        }
+        if (setki == 58) {
+            setki -= 10;
+            tysiace++;
+        }
+        
+        // THREAD 3 //
+        tmp = "Grafiki/" + name + tysiace + setki + dziesiatki + jednosci + ".ppm";
+        
+        thread watek_3(watek3, tmp, R_mid, I_mid, rozrzutR, rozrzutI);
+        
+        rozrzutR *= zoom;
+        rozrzutI *= zoom;
+        
+        R_mid += krok_R;
+        I_mid += krok_I;
+        
+        jednosci++;
+        if (jednosci == 58) {
+            jednosci -= 10;
+            dziesiatki++;
+        }
+        if (dziesiatki == 58) {
+            dziesiatki -= 10;
+            setki++;
+        }
+        if (setki == 58) {
+            setki -= 10;
+            tysiace++;
+        }
+        
+        // THREAD 4 //
+        tmp = "Grafiki/" + name + tysiace + setki + dziesiatki + jednosci + ".ppm";
+        
+        thread watek_4(watek4, tmp, R_mid, I_mid, rozrzutR, rozrzutI);
+        
+        rozrzutR *= zoom;
+        rozrzutI *= zoom;
+        
+        R_mid += krok_R;
+        I_mid += krok_I;
+        
+        jednosci++;
+        if (jednosci == 58) {
+            jednosci -= 10;
+            dziesiatki++;
+        }
+        if (dziesiatki == 58) {
+            dziesiatki -= 10;
+            setki++;
+        }
+        if (setki == 58) {
+            setki -= 10;
+            tysiace++;
+        }
+        
+        // THREAD 5 //
+        tmp = "Grafiki/" + name + tysiace + setki + dziesiatki + jednosci + ".ppm";
+        
+        thread watek_5(watek5, tmp, R_mid, I_mid, rozrzutR, rozrzutI);
+        
+        rozrzutR *= zoom;
+        rozrzutI *= zoom;
+        
+        R_mid += krok_R;
+        I_mid += krok_I;
+        
+        jednosci++;
+        if (jednosci == 58) {
+            jednosci -= 10;
+            dziesiatki++;
+        }
+        if (dziesiatki == 58) {
+            dziesiatki -= 10;
+            setki++;
+        }
+        if (setki == 58) {
+            setki -= 10;
+            tysiace++;
+        }
+        
+        watek_1.join();
+        watek_2.join();
+        watek_3.join();
+        watek_4.join();
+        watek_5.join();
 
+        cout <<"Narysowano " <<klatki+5 <<'/' <<limit <<" klatek." <<endl;
     }
 
     cout.sync_with_stdio(true);
@@ -154,3 +230,157 @@ int main(int argc, char * argv[]) {
 
     return 0;
 }
+
+
+inline unsigned int findMandelbrot(complex num)
+{
+    unsigned int i = 0;
+    complex z;
+    z.real =0;
+    z.imaginary = 0;
+    
+    while (i < iterations && z.real*z.real + z.imaginary*z.imaginary < 2) {
+        z = (z^potega) + num;
+        ++i;
+    }
+    
+    return i;
+}
+
+void watek1(const string nazwa, const long double R_mid, const long double I_mid,
+                                const long double rozrzutR, const long double rozrzutI)
+{
+    long double uR2 = 2*rozrzutR/picW;
+    long double uI2 = 2*rozrzutI/picH;
+    
+    ofstream mandelbrot1(nazwa.c_str());
+    
+    mandelbrot1 <<"P3" <<endl;
+    mandelbrot1 <<picW <<' ' <<picH <<endl;
+    mandelbrot1 <<color <<endl;
+    
+    for (int y=0; y<picH; ++y) {
+        for (int x=0; x<picW; ++x) {
+            complex C;
+            C.real = R_mid - rozrzutR + x*uR2;
+            C.imaginary = I_mid - rozrzutI + y*uI2;
+            
+            draw pixel(findMandelbrot(C), mandelbrot1, iterations);
+        }
+    }
+    //cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<limit <<"\033[0m" <<endl;
+    
+    mandelbrot1.close();
+}
+
+void watek2(const string nazwa, const long double R_mid, const long double I_mid,
+            const long double rozrzutR, const long double rozrzutI)
+{
+    long double uR2 = 2*rozrzutR/picW;
+    long double uI2 = 2*rozrzutI/picH;
+    
+    ofstream mandelbrot2(nazwa.c_str());
+    
+    mandelbrot2 <<"P3" <<endl;
+    mandelbrot2 <<picW <<' ' <<picH <<endl;
+    mandelbrot2 <<color <<endl;
+    
+    for (int y=0; y<picH; ++y) {
+        for (int x=0; x<picW; ++x) {
+            complex C;
+            C.real = R_mid - rozrzutR + x*uR2;
+            C.imaginary = I_mid - rozrzutI + y*uI2;
+            
+            draw pixel(findMandelbrot(C), mandelbrot2, iterations);
+        }
+    }
+    //cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<limit <<"\033[0m" <<endl;
+    
+    mandelbrot2.close();
+}
+
+void watek3(const string nazwa, const long double R_mid, const long double I_mid,
+            const long double rozrzutR, const long double rozrzutI)
+{
+    long double uR2 = 2*rozrzutR/picW;
+    long double uI2 = 2*rozrzutI/picH;
+    
+    ofstream mandelbrot3(nazwa.c_str());
+    
+    mandelbrot3 <<"P3" <<endl;
+    mandelbrot3 <<picW <<' ' <<picH <<endl;
+    mandelbrot3 <<color <<endl;
+    
+    for (int y=0; y<picH; ++y) {
+        for (int x=0; x<picW; ++x) {
+            complex C;
+            C.real = R_mid - rozrzutR + x*uR2;
+            C.imaginary = I_mid - rozrzutI + y*uI2;
+            
+            draw pixel(findMandelbrot(C), mandelbrot3, iterations);
+        }
+    }
+    //cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<limit <<"\033[0m" <<endl;
+    
+    mandelbrot3.close();
+}
+
+void watek4(const string nazwa, const long double R_mid, const long double I_mid,
+            const long double rozrzutR, const long double rozrzutI)
+{
+    long double uR2 = 2*rozrzutR/picW;
+    long double uI2 = 2*rozrzutI/picH;
+    
+    ofstream mandelbrot4(nazwa.c_str());
+    
+    mandelbrot4 <<"P3" <<endl;
+    mandelbrot4 <<picW <<' ' <<picH <<endl;
+    mandelbrot4 <<color <<endl;
+    
+    for (int y=0; y<picH; ++y) {
+        for (int x=0; x<picW; ++x) {
+            complex C;
+            C.real = R_mid - rozrzutR + x*uR2;
+            C.imaginary = I_mid - rozrzutI + y*uI2;
+            
+            draw pixel(findMandelbrot(C), mandelbrot4, iterations);
+        }
+    }
+    //cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<limit <<"\033[0m" <<endl;
+    
+    mandelbrot4.close();
+}
+
+void watek5(const string nazwa, const long double R_mid, const long double I_mid,
+            const long double rozrzutR, const long double rozrzutI)
+{
+    long double uR2 = 2*rozrzutR/picW;
+    long double uI2 = 2*rozrzutI/picH;
+    
+    ofstream mandelbrot5(nazwa.c_str());
+    
+    mandelbrot5 <<"P3" <<endl;
+    mandelbrot5 <<picW <<' ' <<picH <<endl;
+    mandelbrot5 <<color <<endl;
+    
+    for (int y=0; y<picH; ++y) {
+        for (int x=0; x<picW; ++x) {
+            complex C;
+            C.real = R_mid - rozrzutR + x*uR2;
+            C.imaginary = I_mid - rozrzutI + y*uI2;
+            
+            draw pixel(findMandelbrot(C), mandelbrot5, iterations);
+        }
+    }
+    //cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<limit <<"\033[0m" <<endl;
+    
+    mandelbrot5.close();
+}
+
+
+
+
+
+
+
+
