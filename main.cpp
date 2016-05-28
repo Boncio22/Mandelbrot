@@ -42,6 +42,9 @@ using namespace std;
 #define debug false
 
 inline unsigned int findMandelbrot(complex num);
+inline void update(const long double krok_R, const long double krok_I,
+                   long double &R_mid, long double &I_mid, long double &rozrzutR, long double &rozrzutI,
+                   char &tysiace, char &setki, char &dziesiatki, char &jednosci);
 
 void watek1(const string nazwa, const long double R_mid, const long double I_mid,
             const long double rozrzutR, const long double rozrzutI);
@@ -90,126 +93,32 @@ int main(int argc, char * argv[]) {
         tmp = "Grafiki/" + name + tysiace + setki + dziesiatki + jednosci + ".ppm";
         
         thread watek_1(watek1, tmp, R_mid, I_mid, rozrzutR, rozrzutI);
-
-        rozrzutR *= zoom;
-        rozrzutI *= zoom;
-        
-        R_mid += krok_R;
-        I_mid += krok_I;
-        
-        jednosci++;
-        if (jednosci == 58) {
-            jednosci -= 10;
-            dziesiatki++;
-        }
-        if (dziesiatki == 58) {
-            dziesiatki -= 10;
-            setki++;
-        }
-        if (setki == 58) {
-            setki -= 10;
-            tysiace++;
-        }
+        update(krok_R, krok_I, R_mid, I_mid, rozrzutR, rozrzutI, tysiace, setki, dziesiatki, jednosci);
         
         // THREAD 2 //
         tmp = "Grafiki/" + name + tysiace + setki + dziesiatki + jednosci + ".ppm";
         
         thread watek_2(watek2, tmp, R_mid, I_mid, rozrzutR, rozrzutI);
-        
-        rozrzutR *= zoom;
-        rozrzutI *= zoom;
-        
-        R_mid += krok_R;
-        I_mid += krok_I;
-        
-        jednosci++;
-        if (jednosci == 58) {
-            jednosci -= 10;
-            dziesiatki++;
-        }
-        if (dziesiatki == 58) {
-            dziesiatki -= 10;
-            setki++;
-        }
-        if (setki == 58) {
-            setki -= 10;
-            tysiace++;
-        }
+        update(krok_R, krok_I, R_mid, I_mid, rozrzutR, rozrzutI, tysiace, setki, dziesiatki, jednosci);
         
         // THREAD 3 //
         tmp = "Grafiki/" + name + tysiace + setki + dziesiatki + jednosci + ".ppm";
         
         thread watek_3(watek3, tmp, R_mid, I_mid, rozrzutR, rozrzutI);
-        
-        rozrzutR *= zoom;
-        rozrzutI *= zoom;
-        
-        R_mid += krok_R;
-        I_mid += krok_I;
-        
-        jednosci++;
-        if (jednosci == 58) {
-            jednosci -= 10;
-            dziesiatki++;
-        }
-        if (dziesiatki == 58) {
-            dziesiatki -= 10;
-            setki++;
-        }
-        if (setki == 58) {
-            setki -= 10;
-            tysiace++;
-        }
-        
+        update(krok_R, krok_I, R_mid, I_mid, rozrzutR, rozrzutI, tysiace, setki, dziesiatki, jednosci);
+    
         // THREAD 4 //
         tmp = "Grafiki/" + name + tysiace + setki + dziesiatki + jednosci + ".ppm";
         
         thread watek_4(watek4, tmp, R_mid, I_mid, rozrzutR, rozrzutI);
-        
-        rozrzutR *= zoom;
-        rozrzutI *= zoom;
-        
-        R_mid += krok_R;
-        I_mid += krok_I;
-        
-        jednosci++;
-        if (jednosci == 58) {
-            jednosci -= 10;
-            dziesiatki++;
-        }
-        if (dziesiatki == 58) {
-            dziesiatki -= 10;
-            setki++;
-        }
-        if (setki == 58) {
-            setki -= 10;
-            tysiace++;
-        }
-        
+        update(krok_R, krok_I, R_mid, I_mid, rozrzutR, rozrzutI, tysiace, setki, dziesiatki, jednosci);
+    
         // THREAD 5 //
         tmp = "Grafiki/" + name + tysiace + setki + dziesiatki + jednosci + ".ppm";
         
         thread watek_5(watek5, tmp, R_mid, I_mid, rozrzutR, rozrzutI);
+        update(krok_R, krok_I, R_mid, I_mid, rozrzutR, rozrzutI, tysiace, setki, dziesiatki, jednosci);
         
-        rozrzutR *= zoom;
-        rozrzutI *= zoom;
-        
-        R_mid += krok_R;
-        I_mid += krok_I;
-        
-        jednosci++;
-        if (jednosci == 58) {
-            jednosci -= 10;
-            dziesiatki++;
-        }
-        if (dziesiatki == 58) {
-            dziesiatki -= 10;
-            setki++;
-        }
-        if (setki == 58) {
-            setki -= 10;
-            tysiace++;
-        }
         
         watek_1.join();
         watek_2.join();
@@ -247,6 +156,31 @@ inline unsigned int findMandelbrot(complex num)
     return i;
 }
 
+inline void update(const long double krok_R, const long double krok_I,
+                   long double &R_mid, long double &I_mid, long double &rozrzutR, long double &rozrzutI,
+                   char &tysiace, char &setki, char &dziesiatki, char &jednosci)
+{
+    rozrzutR *= zoom;
+    rozrzutI *= zoom;
+    
+    R_mid += krok_R;
+    I_mid += krok_I;
+    
+    jednosci++;
+    if (jednosci == 58) {
+        jednosci -= 10;
+        dziesiatki++;
+    }
+    if (dziesiatki == 58) {
+        dziesiatki -= 10;
+        setki++;
+    }
+    if (setki == 58) {
+        setki -= 10;
+        tysiace++;
+    }
+}
+
 void watek1(const string nazwa, const long double R_mid, const long double I_mid,
                                 const long double rozrzutR, const long double rozrzutI)
 {
@@ -268,7 +202,6 @@ void watek1(const string nazwa, const long double R_mid, const long double I_mid
             draw pixel(findMandelbrot(C), mandelbrot1, iterations);
         }
     }
-    //cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<limit <<"\033[0m" <<endl;
     
     mandelbrot1.close();
 }
@@ -294,7 +227,6 @@ void watek2(const string nazwa, const long double R_mid, const long double I_mid
             draw pixel(findMandelbrot(C), mandelbrot2, iterations);
         }
     }
-    //cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<limit <<"\033[0m" <<endl;
     
     mandelbrot2.close();
 }
@@ -320,7 +252,6 @@ void watek3(const string nazwa, const long double R_mid, const long double I_mid
             draw pixel(findMandelbrot(C), mandelbrot3, iterations);
         }
     }
-    //cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<limit <<"\033[0m" <<endl;
     
     mandelbrot3.close();
 }
@@ -346,7 +277,6 @@ void watek4(const string nazwa, const long double R_mid, const long double I_mid
             draw pixel(findMandelbrot(C), mandelbrot4, iterations);
         }
     }
-    //cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<limit <<"\033[0m" <<endl;
     
     mandelbrot4.close();
 }
@@ -372,7 +302,6 @@ void watek5(const string nazwa, const long double R_mid, const long double I_mid
             draw pixel(findMandelbrot(C), mandelbrot5, iterations);
         }
     }
-    //cout <<"\033[32m"<<"Rysowanie klatki " <<klatki <<'/' <<limit <<"\033[0m" <<endl;
     
     mandelbrot5.close();
 }
