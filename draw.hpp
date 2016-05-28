@@ -18,7 +18,7 @@ public:
     unsigned short int B;    // blue
 
 public:
-    draw(float num, std::ofstream& mandelbrot, const int iterations)
+    draw(float num, std::ofstream &mandelbrot, const int iterations)
     {
         if (num == iterations) {
             this->R = 0;

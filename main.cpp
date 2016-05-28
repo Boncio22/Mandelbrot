@@ -182,7 +182,7 @@ inline void update(const long double krok_R, const long double krok_I,
 }
 
 void watek1(const string nazwa, const long double R_mid, const long double I_mid,
-                                const long double rozrzutR, const long double rozrzutI)
+            const long double rozrzutR, const long double rozrzutI)
 {
     long double uR2 = 2*rozrzutR/picW;
     long double uI2 = 2*rozrzutI/picH;
