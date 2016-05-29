@@ -11,7 +11,7 @@
 
 #include <fstream>
 
-class draw {
+class draw {    // klasa nadajaca kolor pixelom
 public:
     unsigned short int R;    // red
     unsigned short int G;    // green
@@ -20,10 +20,10 @@ public:
 public:
     draw(float num, std::ofstream &mandelbrot, const int iterations)
     {
-        if (num == iterations) {
-            this->R = 0;
-            this->G = 0;
-            this->B = 0;
+        if (num == iterations) {    // tu zaczyna sie paleta kolorow
+            this->R = 0;            // ktorej nie bede komentowal bo
+            this->G = 0;            // bo to nie ma sensu
+            this->B = 0;    // ale jesli pixel przetrwal wszystkie iteracje to koloruje go na czarno
         } else {
             num = (int)num % 16;
             if (num < 1.f) {
@@ -93,7 +93,7 @@ public:
             }
         }
 
-        mandelbrot <<this->R <<' ' <<this->G <<' ' <<this->B <<'\n';
+        mandelbrot <<this->R <<' ' <<this->G <<' ' <<this->B <<'\n';    // wypisanie koloru do pliku
     }
 };
 

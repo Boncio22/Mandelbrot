@@ -24,7 +24,7 @@ complex complex::operator *(const complex& b)
     return C;
 }
 
-complex complex::operator ^(const unsigned& p)
+complex complex::operator ^(const unsigned int& p)
 {
     complex tmp;
     tmp.real = this->real;

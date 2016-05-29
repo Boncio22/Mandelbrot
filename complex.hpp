@@ -14,11 +14,32 @@ public:
     long double real;
     long double imaginary;
     
+    /**
+     *  suma liczb zespolonych
+     *
+     *  @param b liczba ktora dodajemy
+     *
+     *  @return zwraca sume
+     */
     complex operator +(const complex& b);
     
+    /**
+     *  iloczyn liczb zespolonych
+     *
+     *  @param b liczba przez ktora mnozymy
+     *
+     *  @return iloczyn oby liczb
+     */
     complex operator *(const complex& b);
     
-    complex operator ^(const unsigned& p);
+    /**
+     *  podnoszenie liczby zespolonej do odpowiedniej potegi
+     *
+     *  @param p liczba calkowita do ktorej potegujemy
+     *
+     *  @return p-ta potega liczby
+     */
+    complex operator ^(const unsigned int& p);
 };
 
 
