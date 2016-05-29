@@ -97,9 +97,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="complex.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="complex.hpp" />
     <ClInclude Include="draw.hpp" />
   </ItemGroup>
   <ItemGroup>
