@@ -11,8 +11,6 @@
 
 #include <fstream>
 
-#define palette 2
-
 class draw {    // klasa nadajaca kolor pixelom
 public:
     unsigned short int R;    // red
@@ -20,9 +18,9 @@ public:
     unsigned short int B;    // blue
 
 public:
-    draw(float num, std::ofstream &mandelbrot, const int iterations)
+    draw(float num, std::ofstream &mandelbrot, const int iterations, const int paleta)
     {  
-		switch (palette)
+		switch (paleta)
 		{
 		case 1:		  // domyslna paleta by tomek
 		{

@@ -32,9 +32,10 @@ using namespace std;
 #define zoom    0.99                // jaka czesc poprzedniego obrazu bedzei generowana w nastepnej klatce
 #define potega  3                   // do ktorej potegi podnosic liczby zespolone
 
-#define animacja    true        // robic animacje czy pojedyncza klatke
+#define animacja    false        // robic animacje czy pojedyncza klatke
 #define szybkosc    60          // ilosc fps w animacji
 #define dlugosc     20          // dlugosc animacji w sekundach
+#define paleta      4
 
 #define iterations  500 + szybkosc * dlugosc    // tak ustalilem aby nie bylo zbyt malo iteracji
                                                 // co skutkowaloby jednolitym kolorem na koniec animacji
@@ -201,7 +202,7 @@ void rysowanie(const string nazwa, const long double R_mid, const long double I_
             C.real = R_mid - rozrzutR + x * R_unit; // nadanie jej odpowiednich wartosci
             C.imaginary = I_mid - rozrzutI + y * I_unit;    // na podstawie wspolrzednych na obrazie
             
-            draw pixel(findMandelbrot(C), mandelbrot, iterations);  // rysowanie odpowiedniego pixela
+            draw pixel(findMandelbrot(C), mandelbrot, iterations, paleta);  // rysowanie odpowiedniego pixela
         }
     }
     
